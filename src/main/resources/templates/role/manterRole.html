@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<meta charset= "utf-8">
+<head th:replace="head :: head"></head>
+
+<body>
+  <!-- 
+    BARRA DE NAVEGACAO 
+  -->
+  <div th:replace="menu :: menu"></div>
+  <!-- 
+    CONTEUDO DA PAGINA 
+  -->
+  <main class="container">
+    <div class="bg-light p-5 rounded">
+      <h3>Gerenciar Perfil de Usuários</h3>      
+      
+      <div th:switch="${role.id>0}">
+      	<p th:case="${true}">Atualização</p>
+      	<p th:case="*">Cadastro de Perfil de Usuário</p>
+      </div>
+
+      <form th:object="${role}" th:action="@{/roles/save/}" method="POST">
+        <input type="hidden" th:field="${role.id}" th:if="${role.id}" />
+        
+        <h4>Dados:</h4>
+        <div class="row">
+        	<div class="col">
+        		<div class="row">
+        			<div class="col">
+        				<label class="form-label" for="nome">Nome</label> 
+				          <input type="text" th:field="${role.name}" class="form-control" id="name" placeholder="Roles" 
+				          autocomplete="off">
+				          <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">inválido</span>
+        			</div>
+        		</div>
+        	</div>
+        </div>
+		
+        <div class="mb-3">        
+          <p th:switch="${role.id>0}">
+            <button th:case="${true}" type="submit" class="btn btn-danger">Update</button>
+            <button th:case="*" type="submit" class="btn btn-primary">Add</button>
+          </p>          
+        </div>
+      </form>
+    </div>
+  </main>
+  <script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

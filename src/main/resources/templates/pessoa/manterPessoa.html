@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+ <meta charset="utf-8">
+<head th:replace="head :: head"></head>
+
+<body>
+  <!-- 
+    BARRA DE NAVEGACAO 
+  -->
+  <div th:replace="menu :: menu"></div>
+  <!-- 
+    CONTEUDO DA PAGINA 
+  -->
+  <main class="container">
+    <div class="bg-light p-5 rounded">
+      <h3>Gerenciar pessoas</h3>      
+      
+      <div th:switch="${pessoa.id>0}">
+      	<p th:case="${true}">Atualização</p>
+      	<p th:case="*">Cadastro de pessoa</p>
+      </div>
+
+      <form th:object="${pessoa}" th:action="@{/pessoas/save/}" method="POST">
+        <input type="hidden" th:field="${pessoa.id}" th:if="${pessoa.id}" />
+        
+        
+        <h4>Dados:</h4>
+        <div class="row">
+        	<div class="col-md-2">
+		        <img width="100px" th:src="${pessoa.persondb?.profile_path}">
+        	</div>
+        	<div class="col">
+        		<div class="row">
+        			<div class="col">
+        				<label class="form-label" for="nome">Nome</label> 
+				          <input type="text" th:field="${pessoa.nome}" class="form-control" id="nome" placeholder="Nome" 
+				          autocomplete="off">
+				          <span class="error" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}">campo invalido</span>
+        			</div>
+        			<div class="col">
+        				<label class="form-label" for="nome">Data nascimento</label> 
+				          <input type="text" th:field="${pessoa.dataNasc}" class="form-control" placeholder="dd/MM/yyyy">
+				          <span class="error" th:if="${#fields.hasErrors('dataNasc')}" th:errors="*{dataNasc}">campo invalido</span>
+        			</div>
+        			
+        		</div>
+        		<div class="row">
+        			<div class="col-md-4">
+				        <h4>Filmes que atuou:</h4>        
+				        
+				        <p th:each="filme: ${pessoa.filmes}" style="margin-bottom: 5px;">
+				          <label>
+				          
+				          <input type="checkbox" name="filmes" th:value="${filme.id}" 
+				          checked="checked" onclick="return false;" style="margin-right: 10px;">
+				          
+				          <a th:href="@{/filmes/edit/{id}(id=${filme.id})}" th:text="${filme.nome}"></a>
+				          
+				          </label>
+				        </p>
+        			</div>
+        			
+        				<label class="form-label" >Popularity:</label> 
+        				<span class="moviedb" th:text="${pessoa.persondb?.popularity}?:'unknow'" />
+        				
+        			</div>
+        			<div class="col">
+        				<span class="moviedb" th:text="${pessoa.persondb?.biography}?:'biography not found'" />
+        			</div>
+        		</div>
+        
+       
+        
+        <div class="mb-3">        
+          <p th:switch="${pessoa.id>0}">
+            <button th:case="${true}" type="submit" class="btn btn-danger">Atulizar</button>
+            <button th:case="*" type="submit" class="btn btn-primary">Adicionar</button>
+          </p>          
+        </div>
+      </form>
+    </div>
+  </main>
+  <script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

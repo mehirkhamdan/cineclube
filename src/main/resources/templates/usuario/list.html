@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<meta charset= "utf-8">
+<title>User list</title>
+
+<head th:replace="head :: head"></head>
+<body>
+  <!-- 
+    BARRA DE NAVEGACAO 
+  -->
+  <div th:replace="menu :: menu"></div>
+  <!-- 
+    CONTEUDO DA PAGINA 
+  -->
+  <main class="container">
+    <a class="btn btn-primary active" role="button" th:href="@{/usuarios/new}">
+      <i class="bi bi-plus-square"></i>
+      Usuário
+    </a>
+    
+    <div class="bg-light p-5 rounded">
+      <h2>Usuários</h2>
+      <table class="table table-striped table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Permissoes</th>
+          <th>#</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="usuario: ${userList}">
+          <td th:text="${usuario.id}"/>
+          <td>
+             
+          <a th:href="@{/usuarios/edit/{id}(id=${usuario.id})}" th:text="${usuario.nome}" ></a>
+          </td>
+          
+          <td th:text="${{usuario.email}}"/>
+          
+          <td>
+            <span  th:each="role: ${usuario.roles}" th:text="${role.name}"></span>
+          </td>
+          
+          <td><a th:href="@{/usuarios/delete/{id}(id=${usuario.id})}">
+            <i class="bi bi-dash-circle" title="delete"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+      </table>
+      
+    </div>
+  </main>
+  
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
+  
+</body>
+</html>
